@@ -2,3 +2,4 @@
 
 - Day 01: Python
 - Day 02: GoLang
+- Day 03: GoLang
