@@ -35,11 +35,11 @@ sorted_items = sorted(vector_diff.items(), key=lambda kv: kv[1])
 print(sorted_items[:5])
 
 super_set = list()
-nmb_cable = 11
+nmb_cable = 9
 
-for i in sorted_items:
-    found = False
+for i in sorted_items[:10]:
     k, v = i[0]
+    print("---")
     print("New set:", k, v)
 
     if len(super_set) == 0:
@@ -48,43 +48,48 @@ for i in sorted_items:
         nmb_cable -= 1
         continue
 
+    a = b = None
+
     for s in super_set:
-        if k in s and v in s:
-            print("Circuit connu", k, v)
-            found = True
-            continue
-
-        elif k in s:
-            print("found k")
-            s.add(v)
-            print(s)
-            nmb_cable -= 1
-            found = True
-            tmp = s
-            continue
+        if k in s:
+            print("k found")
+            a = s
         
-        elif v in s:
-            print("found v")
-            if tmp:
-                tmp = tmp.union(s)
-                print(tmp)
-                del(s)
-            else:
-                s.add(k)
-                print(s)
-            nmb_cable -= 1
-            found = True
-            continue
+        if v in s:
+            print("v found")
+            b = s
 
-    tmp = None
-
-    if not found:
+    if a is None and b is None:
         print("found none")
         super_set.append(set([v, k]))
         nmb_cable -= 1
+        continue
+
+    if a == b:
+        print("Circuit Connu")
+        continue
+
+    if a and b:
+        tmp = a.union(b)
+        super_set.remove(a)
+        super_set.remove(b)
+        super_set.append(tmp)
+        print("fusion:", tmp)
+        nmb_cable -= 1
+    elif a and not b:
+        a.add(v)
+        print("ajout v", a)
+        nmb_cable -= 1
+    elif b and not a:
+        b.add(k)
+        print("ajout k", b)
+        nmb_cable -= 1
     
     if nmb_cable == 0:
+        print("fin")
         break
+    
+
 
 print("circuits")
 print(super_set)
@@ -95,4 +100,5 @@ for ss in super_set:
     size.append(len(ss))
 
 result = sorted(size)
+print(result)
 print("Result Part1", result[-3]*result[-2]*result[-1])
