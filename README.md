@@ -6,3 +6,4 @@
 - Day 04: GoLang
 - Day 05: Python
 - Day 06: GoLang
+- Day 09: Python
