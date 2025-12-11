@@ -14,6 +14,21 @@ def go_deep(devices, node, path):
         path.pop()
     return local
 
+def go_up(devices, node, path):
+    local = 0
+    for d in devices:
+        print("test:", d)
+        if d == "svr":
+            return 1
+        if d in path:
+            return 0
+        if node in devices[d]:
+            path.append(d)
+            print(path)
+            local += go_up(devices, d, path)
+        # path.pop()
+    return local
+
 devices = {}
 
 # Ouvre le fichier en mode lecture
@@ -23,14 +38,17 @@ with open(nom_fichier, 'r') as fichier:
     for ligne in fichier:
         tmp = ligne.strip().split(":")
         devices[tmp[0]] = tmp[1].strip().split(" ")
-
-print(devices)
         
 resultat_part1 = 0
 
 current = "you"
 path = list()
 path.append(current)
-resultat_part1 = go_deep(devices, current, path)
+# resultat_part1 = go_deep(devices, current, path)
+
+current = "dac"
+path = list()
+path.append(current)
+resultat_part1 = go_up(devices, current, path)
 
 print("resultat", resultat_part1)
