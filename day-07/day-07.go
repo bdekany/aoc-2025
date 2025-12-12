@@ -42,6 +42,7 @@ func main() {
 	bottom[start_index] = 1
 
 	result_part1 := 0
+	result_part2 := 0
 	
 	for _, v := range tachyon {
 		for i, r := range v {
@@ -52,20 +53,29 @@ func main() {
 			fmt.Println("Splitter at", i )
 			fmt.Println("Etat du Spliter:", bottom[i])
 
-			if bottom[i] == 1 {
+			if bottom[i] > 0 {
 				result_part1++
 				
-				bottom[i] = 0
+				
 				if i-1 >= 0 {
-					bottom[i-1] = 1
+					bottom[i-1] += bottom[i]
+					//result_part2++
 				}
 				if i+1 <= len(tachyon[0]) {
-					bottom[i+1] = 1 
+					bottom[i+1] += bottom[i]
+					//result_part2++
 				}
+
+				bottom[i] = 0
 			}
 		}
 	}
 
+	for _, r := range bottom {
+		result_part2 += r
+	}
+
 	fmt.Println(bottom)
 	fmt.Println("Result Part1:", result_part1)
+	fmt.Println("Result Part1:", result_part2)
 }
